@@ -1,0 +1,191 @@
+openapi: 3.0.2
+info:
+  title: Tournament Control API
+  description: API for managing, registering and referencing MTG tournaments
+  version: "1.0"
+  contact:
+    name: BernardMF
+    url: https://github.com/BernardMF
+paths:
+  /tournaments:
+    post:
+      requestBody:
+        description: Tournament information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTournamentRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTournamentResponse'
+          description: OK
+
+components:
+  schemas:
+
+    CreateTournamentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the tournament
+        name:
+          type: string
+          description: Name of the tournament
+        dateTime:
+          type: string
+          format: date-time
+          description: Date of the tournament
+      required: [id, name, dateTime]
+      example: {
+        "id": "5f9f5b9b-7b5a-4b9f-9c5b-9b7b5a4b9f9c",
+        "name": "Pioneer Tournament 2023-01-01 19:00:00",
+        "dateTime": "2023-01-01T19:00:00Z"
+      }
+
+    CreateTournamentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the tournament
+        description:
+          type: string
+          description: Description of the tournament
+        dateTime:
+          type: string
+          format: date-time
+          description: Date of the tournament
+        location:
+          $ref: '#/components/schemas/Address'
+          description: Location where the tournament will happen of the tournament
+        entryFee:
+            $ref: '#/components/schemas/EntryFee'
+            description: Payment information for the tournament
+        tournamentConfig:
+          oneOf:
+            - $ref: '#/components/schemas/TournamentConfigMTG'
+          description: Domain specific configuration for the tournament type
+      required: [format, dateTime, tournamentConfig]
+
+    TournamentConfigMTG:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/FormatsTypesEnum'
+          description: MTG format that the tournament will be run in
+        tournamentFormat:
+          type: string
+          enum: [swiss, round_robin, single_elimination]
+          description: Tournament format that the tournament will be run in
+          default: swiss
+        maxRounds:
+          type: integer
+          description: Maximum number of rounds that the tournament will have. 0 if unlimited
+          default: 0
+        roundDuration:
+          type: integer
+          description: Time in minutes that each round will have. 0 if unlimited
+        maxPlayers:
+          type: integer
+          description: Maximum number of players that can register for the tournament. 0 if unlimited
+          default: 0
+        requiredDecklist:
+          type: boolean
+          description: If the tournament requires a decklist to be submitted by the players on registration.
+          default: false
+      required: [format, tournamentFormat, roundTime]
+
+    FormatsTypesEnum:
+      type: string
+      enum: [standard, pioneer, modern, legacy, vintage, commander, brawl, pauper, penny, duel, oldschool, frontier, historic, draft, sealed, other]
+      description: Enum of accepted MTG formats
+    EntryFee:
+      type: object
+      properties:
+        fee:
+          type: integer
+          description: Entry fee for the tournament with minor unit
+          default: 0
+          minimum: 0
+        currency:
+          type: string
+          enum: [BRL, other]
+          description: Currency of the entry fee
+          default: BRL
+        paymentsAccepted:
+          $ref: '#/components/schemas/PaymentTypes'
+          description: Payment formats for the tournament
+      required: [fee]
+
+    PaymentTypes:
+      oneOf:
+        - $ref: '#/components/schemas/PaymentTypeCash'
+        - $ref: '#/components/schemas/PaymentTypePix'
+
+    PaymentTypeCash:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [cash]
+          description: Payment type set as cash
+        maxBillAccepted:
+          type: integer
+          description: Maximum bill accepted for cash payment
+      required: [type]
+
+    PaymentTypePix:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [pix]
+            description: Payment type set as pix
+          pixKey:
+            type: string
+            description: Pix key for the account of the tournament organizer
+          pixKeyType:
+            type: string
+            enum: [cpf, cnpj, phone, email, random]
+            description: Type of the pix key
+          pixOwner:
+            type: string
+            description: Name of the PIX owner
+        required: [type, pixKey, pixKeyType, pixOwner]
+
+    Address:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the address
+        contactPhone:
+          type: string
+          description: Contact phone of the address
+        zipCode:
+          type: string
+          description: Zip code of the address
+        street:
+          type: string
+          description: Street of the address
+        number:
+          type: string
+          description: Number of the address
+        complement:
+          type: string
+          description: Complement of the address
+        city:
+          type: string
+          description: City of the address
+        state:
+          type: string
+          description: State of the address
+        country:
+          type: string
+          description: Country of the address
+      required: [name]
