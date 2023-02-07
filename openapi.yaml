@@ -70,11 +70,6 @@ components:
           oneOf:
             - $ref: '#/components/schemas/TournamentConfigMTG'
           description: Domain specific configuration for the tournament type
-        initialPlayerList:
-          type: array
-          items:
-            $ref: '#/components/schemas/Player'
-            description: List of players that will be registered on the tournament creation
       required: [format, dateTime, tournamentConfig]
 
     TournamentConfigMTG:
@@ -195,19 +190,19 @@ components:
           description: Country of the address
       required: [name]
 
-    Player:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the player
-        contactPhone:
-          type: string
-          description: Contact phone of the player
-        email:
-          type: string
-          description: Email of the player
-        decklist:
-          type: string
-          description: URL to the Decklist of the player
-      required: [name]
+#    Player:
+#      type: object
+#      properties:
+#        name:
+#          type: string
+#          description: Name of the player
+#        contactPhone:
+#          type: string
+#          description: Contact phone of the player
+#        email:
+#          type: string
+#          description: Email of the player
+#        decklist:
+#          type: string
+#          description: URL to the Decklist of the player
+#      required: [name]
