@@ -98,6 +98,11 @@ components:
           type: boolean
           description: If the tournament requires a decklist to be submitted by the players on registration.
           default: false
+        initialPlayerList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+            description: List of players that will be registered on the tournament creation
       required: [format, tournamentFormat, roundTime]
 
     FormatsTypesEnum:
@@ -188,4 +193,21 @@ components:
         country:
           type: string
           description: Country of the address
+      required: [name]
+
+    Player:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the player
+        contactPhone:
+          type: string
+          description: Contact phone of the player
+        email:
+          type: string
+          description: Email of the player
+        decklist:
+          type: string
+          description: Decklist of the player
       required: [name]
