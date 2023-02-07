@@ -70,6 +70,11 @@ components:
           oneOf:
             - $ref: '#/components/schemas/TournamentConfigMTG'
           description: Domain specific configuration for the tournament type
+        initialPlayerList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+            description: List of players that will be registered on the tournament creation
       required: [format, dateTime, tournamentConfig]
 
     TournamentConfigMTG:
@@ -98,11 +103,6 @@ components:
           type: boolean
           description: If the tournament requires a decklist to be submitted by the players on registration.
           default: false
-        initialPlayerList:
-          type: array
-          items:
-            $ref: '#/components/schemas/Player'
-            description: List of players that will be registered on the tournament creation
       required: [format, tournamentFormat, roundTime]
 
     FormatsTypesEnum:
@@ -209,5 +209,5 @@ components:
           description: Email of the player
         decklist:
           type: string
-          description: Decklist of the player
+          description: URL to the Decklist of the player
       required: [name]
