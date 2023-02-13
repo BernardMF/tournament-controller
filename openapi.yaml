@@ -61,7 +61,8 @@ components:
           format: date-time
           description: Date of the tournament
         location:
-          $ref: '#/components/schemas/Address'
+#          $ref: '#/components/schemas/Address'
+          type: string
           description: Location where the tournament will happen of the tournament
         entryFee:
             $ref: '#/components/schemas/EntryFee'
@@ -158,37 +159,37 @@ components:
             description: Name of the PIX owner
         required: [type, pixKey, pixKeyType, pixOwner]
 
-    Address:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the address
-        contactPhone:
-          type: string
-          description: Contact phone of the address
-        zipCode:
-          type: string
-          description: Zip code of the address
-        street:
-          type: string
-          description: Street of the address
-        number:
-          type: string
-          description: Number of the address
-        complement:
-          type: string
-          description: Complement of the address
-        city:
-          type: string
-          description: City of the address
-        state:
-          type: string
-          description: State of the address
-        country:
-          type: string
-          description: Country of the address
-      required: [name]
+#    Address:
+#      type: object
+#      properties:
+#        name:
+#          type: string
+#          description: Name of the address
+#        contactPhone:
+#          type: string
+#          description: Contact phone of the address
+#        zipCode:
+#          type: string
+#          description: Zip code of the address
+#        street:
+#          type: string
+#          description: Street of the address
+#        number:
+#          type: string
+#          description: Number of the address
+#        complement:
+#          type: string
+#          description: Complement of the address
+#        city:
+#          type: string
+#          description: City of the address
+#        state:
+#          type: string
+#          description: State of the address
+#        country:
+#          type: string
+#          description: Country of the address
+#      required: [name]
 
 #    Player:
 #      type: object

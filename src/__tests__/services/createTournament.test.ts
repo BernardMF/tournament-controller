@@ -1,6 +1,12 @@
-import { CreateTournament } from '../../services/createTournament';
+import * as service from '../../services/createTournament';
+import * as m from '../__mocks__/createTournament.mock';
 
-it('should create an instance of CreateTournament class', function () {
-  const createTournamentInstace = new CreateTournament();
-  expect(createTournamentInstace).toBeInstanceOf(CreateTournament);
+describe('Test create Tournament request validation', () => {
+  it('should validate a valid request', () => {
+    const validatedRequest = service.validateRequest(m.validRequest);
+    expect(validatedRequest).toMatchObject(m.validatedRequest);
+  });
+  it('should throw an error because the request is invalid', () => {
+    expect(() => service.validateRequest({})).toThrow();
+  });
 });
