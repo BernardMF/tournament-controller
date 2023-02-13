@@ -1,4 +1,5 @@
 import { MongoClient, Collection, Db } from 'mongodb';
+import { CreateTournamentRequest } from '../types/createTournament';
 
 const dbClient: MongoClient = new MongoClient(`${process.env.DB_CONN_STRING}`);
 
@@ -17,5 +18,14 @@ export class Database {
     console.log(
       `Successfully connected to database: ${db.databaseName} and collection: ${tournamentsCollection.collectionName}`
     );
+  }
+
+  public async insertTournament(tournament: CreateTournamentRequest) {
+    const result = await this.collections.tournaments.insertOne(tournament);
+    if (result) {
+      return result;
+    }
+
+    throw new Error('Error inserting tournament');
   }
 }
