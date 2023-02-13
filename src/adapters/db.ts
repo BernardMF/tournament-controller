@@ -1,4 +1,4 @@
-import { MongoClient, Collection, Db } from 'mongodb';
+import { MongoClient, Collection, Db, ObjectId } from 'mongodb';
 import { CreateTournamentRequest } from '../types/createTournament';
 
 const dbClient: MongoClient = new MongoClient(`${process.env.DB_CONN_STRING}`);
@@ -20,12 +20,18 @@ export class Database {
     );
   }
 
-  public async insertTournament(tournament: CreateTournamentRequest) {
+  public async insertTournament(tournament: CreateTournamentRequest): Promise<string> {
     const result = await this.collections.tournaments.insertOne(tournament);
     if (result) {
-      return result;
+      return `${result.insertedId}`;
     }
 
     throw new Error('Error inserting tournament');
+  }
+
+  public async deleteTournament(tournamentId: string): Promise<boolean> {
+    const result = await this.collections.tournaments.deleteOne({ _id: new ObjectId(tournamentId).id });
+    console.debug('Deletion result: ', result);
+    return true;
   }
 }
